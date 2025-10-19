@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerita Kita - Anniversary</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Cinema Opening */
+        .cinema-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeOut 4s ease-in-out 3s forwards;
+        }
+
+        .projector-light {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+            border-radius: 50%;
+            animation: projectorStart 3s ease-in-out;
+        }
+
+        @keyframes projectorStart {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        /* Main Content */
+        .main-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="20" r="1" fill="white" opacity="0.3"><animate attributeName="cy" values="20;80;20" dur="3s" repeatCount="indefinite"/></circle><circle cx="20" cy="50" r="0.5" fill="white" opacity="0.5"><animate attributeName="cx" values="20;80;20" dur="4s" repeatCount="indefinite"/></circle><circle cx="80" cy="30" r="0.8" fill="white" opacity="0.4"><animate attributeName="cy" values="30;70;30" dur="2.5s" repeatCount="indefinite"/></circle></svg>');
+            animation: sparkle 6s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        .title {
+            text-align: center;
+            animation: titleAppear 2s ease-out 4s both;
+        }
+
+        .title h1 {
+            font-size: 4rem;
+            margin: 0;
+            background: linear-gradient(45deg, #ff6b6b, #ffd93d, #6bcf7f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255,255,255,0.3);
+            font-weight: bold;
+            letter-spacing: 3px;
+        }
+
+        .title p {
+            font-size: 1.2rem;
+            margin-top: 20px;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        @keyframes titleAppear {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Film Strip */
+        .film-strip {
+            position: fixed;
+            left: -50px;
+            top: 0;
+            width: 40px;
+            height: 100vh;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                rgba(255,255,255,0.1) 10%, 
+                transparent 20%,
+                rgba(255,255,255,0.1) 30%,
+                transparent 40%,
+                rgba(255,255,255,0.1) 50%,
+                transparent 60%,
+                rgba(255,255,255,0.1) 70%,
+                transparent 80%,
+                rgba(255,255,255,0.1) 90%,
+                transparent 100%
+            );
+            border-left: 3px solid rgba(255,255,255,0.2);
+            border-right: 3px solid rgba(255,255,255,0.2);
+            z-index: 10;
+            animation: filmMove 20s linear infinite;
+        }
+
+        @keyframes filmMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100px); }
+        }
+
+        /* Sections */
+        .scene {
+            min-height: 100vh;
+            padding: 80px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+
+        .scene:nth-child(even) {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .scene:nth-child(3n) {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .scene-content {
+            max-width: 800px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .scene-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scene h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .scene p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        /* Photo Gallery */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        /* Scene 4 Collage Gallery */
+        .collage-gallery {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            margin: 40px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .collage-polaroid {
+            position: absolute;
+            background: #fff;
+            padding: 15px 15px 50px 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            max-width: 200px;
+        }
+
+        .collage-polaroid:hover {
+            transform: scale(1.1) !important;
+            z-index: 100;
+        }
+
+        .collage-polaroid:nth-child(1) {
+            top: 2%;
+            left: 5%;
+            transform: rotate(-15deg);
+        }
+
+        .collage-polaroid:nth-child(2) {
+            top: 5%;
+            left: 50%;
+            transform: rotate(10deg);
+        }
+
+        .collage-polaroid:nth-child(3) {
+            top: 1%;
+            right: 5%;
+            transform: rotate(-8deg);
+        }
+
+        .collage-polaroid:nth-child(4) {
+            top: 45%;
+            left: 2%;
+            transform: rotate(-12deg);
+        }
+
+        .collage-polaroid:nth-child(5) {
+            top: 40%;
+            left: 55%;
+            transform: rotate(8deg);
+        }
+
+        .collage-polaroid:nth-child(6) {
+            top: 35%;
+            right: 2%;
+            transform: rotate(-6deg);
+        }
+
+        .collage-polaroid:nth-child(7) {
+            bottom: 30%;
+            left: 25%;
+            transform: rotate(-10deg);
+        }
+
+        .collage-polaroid:nth-child(8) {
+            bottom: 25%;
+            right: 30%;
+            transform: rotate(7deg);
+        }
+
+        .collage-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: block;
+        }
+
+        .collage-caption {
+            color: #333;
+            font-size: 0.8rem;
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        /* Scene 1 Polaroid Gallery */
+        .scene1-gallery {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .scene1-polaroid {
+            background: #fff;
+            padding: 15px 15px 50px 15px;
+            transform: rotate(-2deg);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: inline-block;
+            max-width: 300px;
+            width: auto;
+        }
+
+        .scene1-polaroid:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .scene1-polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+            z-index: 10;
+        }
+
+        .scene1-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: block;
+        }
+
+        .scene1-caption {
+            color: #333;
+            font-size: 0.9rem;
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        .polaroid {
+            background: #fff;
+            padding: 15px 15px 50px 15px;
+            transform: rotate(-2deg);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            display: inline-block;
+            max-width: 250px;
+        }
+
+        .polaroid:nth-child(even) {
+            transform: rotate(2deg);
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.05);
+            z-index: 10;
+        }
+
+        .polaroid-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: block;
+        }
+
+        .polaroid-caption {
+            color: #333;
+            font-size: 0.9rem;
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive;
+        }
+
+        /* Envelope */
+        .envelope-container {
+            margin: 60px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .envelope {
+            width: 200px;
+            height: 120px;
+            background: #f4f4f4;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .envelope:hover {
+            transform: translateY(-5px);
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-top: 60px solid #e74c3c;
+            border-radius: 5px 5px 0 0;
+        }
+
+        /* Letter Modal */
+        .letter-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .letter-modal.show {
+            display: flex;
+        }
+
+        .letter-paper {
+            background: #fff;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: scale(0.8);
+            opacity: 0;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            overflow-x: hidden;
+            border: 2px solid #f0f0f0;
+            scrollbar-width: thin;
+            scrollbar-color: #ff6b6b #f0f0f0;
+        }
+
+        .letter-paper::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .letter-paper::-webkit-scrollbar-track {
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+
+        .letter-paper::-webkit-scrollbar-thumb {
+            background: #ff6b6b;
+            border-radius: 4px;
+        }
+
+        .letter-paper::-webkit-scrollbar-thumb:hover {
+            background: #ff5252;
+        }
+
+        .letter-modal.show .letter-paper {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .letter-paper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 48%, rgba(0,0,0,0.03) 49%, rgba(0,0,0,0.03) 51%, transparent 52%);
+            pointer-events: none;
+            border-radius: 15px;
+        }
+
+        .letter-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            background: #ff6b6b;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: white;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .letter-close:hover {
+            background: #ff5252;
+            transform: scale(1.1);
+        }
+
+        .letter-content h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+            border-bottom: 2px solid #ff6b6b;
+            padding-bottom: 10px;
+        }
+
+        .letter-content p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .letter-signature {
+            text-align: right;
+            font-style: italic;
+            color: #777;
+            margin-top: 20px;
+        }
+
+        /* Mini Game */
+        .mini-game {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .quiz-question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-option {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: #fff;
+        }
+
+        .quiz-option.correct {
+            background: rgba(76, 175, 80, 0.8);
+            border-color: #4CAF50;
+        }
+
+        .quiz-option.wrong {
+            background: rgba(244, 67, 54, 0.8);
+            border-color: #f44336;
+        }
+
+        /* Hearts Animation */
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff6b6b;
+            animation: heartFloat 3s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes heartFloat {
+            0% { opacity: 0; transform: translateY(100vh) rotate(0deg); }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-100px) rotate(360deg); }
+        }
+
+        /* Final Message */
+        .final-scene {
+            min-height: 100vh;
+            background: linear-gradient(45deg, #1a1a1a, #000);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .final-message {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .handwriting {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 2rem;
+            color: #ff6b6b;
+            opacity: 0;
+            animation: writeText 4s ease-in-out forwards;
+        }
+
+        @keyframes writeText {
+            0% { opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .stars-final {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="10" cy="10" r="1" fill="white"><animate attributeName="opacity" values="0;1;0" dur="2s" repeatCount="indefinite"/></circle><circle cx="90" cy="20" r="0.5" fill="white"><animate attributeName="opacity" values="0;1;0" dur="1.5s" repeatCount="indefinite"/></circle><circle cx="20" cy="80" r="0.8" fill="white"><animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite"/></circle><circle cx="80" cy="90" r="0.6" fill="white"><animate attributeName="opacity" values="0;1;0" dur="1.8s" repeatCount="indefinite"/></circle></svg>');
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title h1 { font-size: 2.5rem; }
+            .scene h2 { font-size: 2rem; }
+            .photo-gallery { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+            .quiz-options { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cinema Intro -->
+    <div class="cinema-intro">
+        <div class="projector-light"></div>
+    </div>
+
+    <!-- Film Strip -->
+    <div class="film-strip"></div>
+
+    <!-- Hearts Container -->
+    <div class="hearts" id="hearts"></div>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="title">
+                <h1>Cerita Kita</h1>
+                <p>Sebuah film kenangan yang tak akan pernah berakhir</p>
+            </div>
+        </section>
+
+        <!-- Scene 0: Aku dan Kamu -->
+        <section class="scene">
+            <div class="scene-content">
+                <h2>Scene 0: Aku dan Kamu</h2>
+                <p>Sebelum cerita dimulai, ada dua orang yang saling mencintai. Kamu dan aku, yang memutuskan untuk menulis kisah cinta kita sendiri. Ini adalah awal dari segalanya.</p>
+                
+                <div class="photo-gallery">
+                    <div class="polaroid" onclick="showMessage(this, 'Ini aku, yang selalu mencintaimu dengan sepenuh hati ❤️')">
+                        <img src="assets/me.webp" alt="Aku" class="polaroid-img">
+                        <div class="polaroid-caption">Yang mencintaimu</div>
+                    </div>
+                    <div class="polaroid" onclick="showMessage(this, 'Dan ini kamu, yang membuat hidupku penuh warna')">
+                        <img src="assets/you.webp" alt="Kamu" class="polaroid-img">
+                        <div class="polaroid-caption">Yang kucintai</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 1: Pertemuan Pertama -->
+        <section class="scene">
+            <div class="scene-content">
+                <h2>Scene 1: Pertemuan Pertama</h2>
+                <p>Hari itu, takdir mempertemukan kita di tempat yang tak pernah kita sangka. Senyummu yang pertama kali kulihat, masih terukir jelas dalam ingatan. Seperti adegan pembuka film romantis yang sempurna.</p>
+                
+                <div class="scene1-gallery">
+                    <div class="scene1-polaroid" onclick="showMessage(this, 'Momen tak terlupakan yang selalu kuingat ❤️')">
+                        <img src="assets/memorable moment.webp" alt="Momen Tak Terlupakan" class="scene1-img">
+                        <div class="scene1-caption">Moment yang tak terlupakan</div>
+                    </div>
+                    <div class="scene1-polaroid" onclick="showMessage(this, 'Awal dari segalanya, di sinilah cerita kita dimulai')">
+                        <img src="assets/beginin.webp" alt="Awal dari Segalanya" class="scene1-img">
+                        <div class="scene1-caption">Awal dari segalanya</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 2: Kencan Pertama -->
+        <section class="scene">
+            <div class="scene-content">
+                <h2>Scene 2: Kencan Pertama</h2>
+                <p>Gugup, deg-degan, tapi bahagia. Itulah yang kurasakan saat kencan pertama kita. Setiap detik bersamamu terasa berharga, seperti scene romantis yang selalu ingin diulang.</p>
+                
+                <div class="envelope-container">
+                    <div class="envelope" onclick="openEnvelope(this)">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 3: Momen Lucu -->
+        <section class="scene">
+            <div class="scene-content">
+                <h2>Scene 3: Momen-Momen Lucu</h2>
+                <p>Tawa kita berdua selalu menjadi soundtrack terbaik dalam setiap hari. Mari kita ingat kembali momen-momen lucu yang pernah kita lalui bersama.</p>
+                
+                <div class="mini-game">
+                    <div class="quiz-question">Seberapa ingat kamu tentang kita? 💕</div>
+                    <div class="quiz-question" id="currentQuestion">Apa makanan favorit yang selalu kita pesan saat kencan?</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="answerQuiz(this, false)">Pizza</div>
+                        <div class="quiz-option" onclick="answerQuiz(this, true)">Mie Ayam & Bakso</div>
+                        <div class="quiz-option" onclick="answerQuiz(this, false)">Sushi</div>
+                        <div class="quiz-option" onclick="answerQuiz(this, false)">Burger</div>
+                    </div>
+                    <div id="quizResult"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 4: Perjalanan Bersama -->
+        <section class="scene">
+            <div class="scene-content">
+                <h2>Scene 4: Perjalanan Bersama</h2>
+                <p>Setiap perjalanan bersama adalah petualangan baru. Dari tempat-tempat sederhana hingga destinasi impian, yang terpenting adalah kita berdua.</p>
+                
+                <div class="collage-gallery">
+                    <div class="collage-polaroid" onclick="showMessage(this, 'Momen konyol kami saat kencan di perpustakaan (libdate) yang seru.')">
+                        <img src="assets/libdate.webp" alt="Library Date" class="collage-img">
+                        <div class="collage-caption">Library Date</div>
+                    </div>
+                    <div class="collage-polaroid" onclick="showMessage(this, 'Menikmati suasana pagi yang cerah saat kencan di Car Free Day (cfdate).')">
+                        <img src="assets/cfdate.webp" alt="Car Free Date" class="collage-img">
+                        <div class="collage-caption">Car Free Date</div>
+                    </div>
+                    <div class="collage-polaroid" onclick="showMessage(this, 'Kenangan pengangkatan sampai larut malam.')">
+                        <img src="assets/late night.webp" alt="Late Night" class="collage-img">
+                        <div class="collage-caption">Late Night</div>
+                    </div>
+                    <div class="collage-polaroid" onclick="showMessage(this, 'Boneka pinguin yang menggemaskan ini adalah kado pertama yang sangat spesial, Wyn')">
+                        <img src="assets/kado pertama.webp" alt="Kado Pertama" class="collage-img">
+                        <div class="collage-caption">Kado Pertama</div>
+                    </div>
+                    <div class="collage-polaroid" onclick="showMessage(this, 'Date dengan senyuman bahagia sambil memegang bouquette bunga yang cantik.')">
+                        <img src="assets/bouquette.webp" alt="Bouquette" class="collage-img">
+                        <div class="collage-caption">Bouquette</div>
+                    </div>
+                    <div class="collage-polaroid" onclick="showMessage(this, 'Menikmati indahnya senja golden hour di tengah kota bersama buket bunga.')">
+                        <img src="assets/golden.webp" alt="Golden Hour" class="collage-img">
+                        <div class="collage-caption">Golden Hour</div>
+                    </div>
+                    <div class="collage-polaroid" onclick="showMessage(this, 'Dua tiket bioskop ini adalah bukti kenang-kenangan movie date kami di Pakuwon City.')">
+                        <img src="assets/movie date.webp" alt="Movie Date" class="collage-img">
+                        <div class="collage-caption">Movie Date</div>
+                    </div>
+                    <div class="collage-polaroid" onclick="showMessage(this, 'Mengabadikan langit senja yang cantik dari atas motor dalam perjalanan road trip kami.')">
+                        <img src="assets/road trip.webp" alt="Road Trip" class="collage-img">
+                        <div class="collage-caption">Road Trip</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Scene -->
+        <section class="final-scene">
+            <div class="stars-final"></div>
+            <div class="final-message">
+                <div class="handwriting">
+                    Selamat Anniversary, Sayang!<br>
+                    Terima kasih untuk setiap momen indah yang telah kita lalui bersama.<br>
+                    Semoga cerita kita akan terus berlanjut dengan lebih banyak kebahagiaan.<br><br>
+                    Aku mencintaimu ❤️
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Letter Modal -->
+    <div class="letter-modal" id="letterModal">
+        <div class="letter-paper">
+            <button class="letter-close" onclick="closeLetter()">&times;</button>
+            <div class="letter-content">
+                <h3>Surat Cinta Pertama</h3>
+                <p>Dalam keajaiban kehadiranmu, kagum menyelinap perlahan, memenuhi hatiku dengan kelembutan yang tak terlukiskan. Pertemuan pertama yang sungguh "aneh," seakan waktu terhenti sejenak, engkau mampu, dengan keajaiban yang engkau bawa, menggugah semua emosi tersembunyi dalam diriku. Bahkan aku sendiri tak menyadari keberadaan mereka sebelumnya.</p>
+                
+                <p>Hanya dengan kehadiranmu, engkau memperkenalkanku pada banyak hal yang baru. Engkau merubah pandanganku tentang dunia menjadi sesuatu yang lebih indah dan bersinar. Engkau membantu aku meyakini bahwa dunia ini tidak selamanya kelam dan suram, seperti yang pernah kucemaskan. Senyummu mampu menghidupkan kembali semangat yang sebelumnya pudar, dan gelak tawamu yang polos memiliki keajaiban mengusir kekhawatiran yang selama ini kusimpan di dalam hati. Aku merasa begitu beruntung memiliki sosok seperti dirimu dalam hidupku. Kau adalah sumber kebahagiaanku, cahaya yang bersinar di tengah kegelapan, dan inspirasiku.</p>
+                
+                <p>Aku sadar bahwa aku sering membuat kesalahan yang membuatmu kecewa dan marah. Aku sangat menyesal atas hal itu dan meminta maaf dengan tulus. Percayalah, aku tidak pernah bermaksud menyakiti perasaanmu dengan sengaja. Aku juga meminta maaf karena belum mampu memenuhi semua harapanmu. Aku berjanji akan berusaha sekuat tenaga untuk menjadi lebih baik, untukmu. Aku berharap kau dapat bersabar dengan ketidaksempurnaanku dan memberiku kesempatan untuk belajar dan tumbuh bersamamu.</p>
+                
+                <p>Untuk semua perjuanganmu, aku mendoakan kelancaran dalam meraih semua tujuanmu. Tetap semangat, kasih. Aku akan selalu ada di sampingmu, memberikan dukungan tanpa henti.</p>
+                
+                <div class="letter-signature">- Dengan cinta</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // guard: only accessible after login
+        if(!localStorage.getItem('anniv-unlocked')){
+            // redirect back to login if not set
+            window.location.href = 'index.html'
+        }
+    </script>
+    <script>
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all scene contents
+        document.querySelectorAll('.scene-content').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Polaroid message function
+        function showMessage(polaroid, message) {
+            // Create heart animation
+            createHearts();
+            
+            // Show message
+            const existingMessage = polaroid.querySelector('.message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            
+            // Check if it's a collage polaroid (absolutely positioned)
+            const isCollage = polaroid.classList.contains('collage-polaroid');
+            
+            if (isCollage) {
+                // For collage polaroids, position message relative to viewport
+                messageDiv.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0,0,0,0.95);
+                    color: white;
+                    padding: 20px 25px;
+                    border-radius: 15px;
+                    font-size: 1rem;
+                    max-width: 400px;
+                    text-align: center;
+                    z-index: 1000;
+                    opacity: 0;
+                    animation: fadeInMessage 0.5s ease forwards;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                    border: 2px solid #ff6b6b;
+                `;
+            } else {
+                // For regular polaroids, position relative to polaroid
+                messageDiv.style.cssText = `
+                    position: absolute;
+                    top: 100%;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(0,0,0,0.9);
+                    color: white;
+                    padding: 10px 15px;
+                    border-radius: 10px;
+                    font-size: 0.9rem;
+                    white-space: nowrap;
+                    z-index: 100;
+                    margin-top: 10px;
+                    opacity: 0;
+                    animation: fadeInMessage 0.5s ease forwards;
+                `;
+            }
+            
+            messageDiv.textContent = message;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeInMessage {
+                    to { opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            if (!isCollage) {
+                polaroid.style.position = 'relative';
+            }
+            polaroid.appendChild(messageDiv);
+            
+            // Remove message after 4 seconds (longer for collage messages)
+            setTimeout(() => {
+                messageDiv.style.animation = 'fadeInMessage 0.5s ease reverse';
+                setTimeout(() => messageDiv.remove(), 500);
+            }, isCollage ? 4000 : 3000);
+        }
+
+        // Envelope function
+        function openEnvelope(envelope) {
+            createHearts();
+            const modal = document.getElementById('letterModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            
+            // Disable smooth scroll for main page when modal is open
+            document.documentElement.style.scrollBehavior = 'auto';
+        }
+
+        // Close letter modal
+        function closeLetter() {
+            const modal = document.getElementById('letterModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+            
+            // Re-enable smooth scroll for main page when modal is closed
+            document.documentElement.style.scrollBehavior = 'smooth';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('letterModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLetter();
+            }
+        });
+
+        // Prevent modal scroll from affecting main page
+        document.getElementById('letterModal').addEventListener('wheel', function(e) {
+            e.stopPropagation();
+        }, { passive: false });
+
+        // Quiz function
+        let quizAnswered = false;
+        function answerQuiz(option, isCorrect) {
+            if (quizAnswered) return;
+            
+            quizAnswered = true;
+            const options = document.querySelectorAll('.quiz-option');
+            const result = document.getElementById('quizResult');
+            
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt === option) {
+                    opt.classList.add(isCorrect ? 'correct' : 'wrong');
+                } else if (isCorrect === false) {
+                    // Show correct answer
+                    const correctOption = document.querySelector('.quiz-option:nth-child(2)');
+                    if (correctOption) correctOption.classList.add('correct');
+                }
+            });
+            
+            if (isCorrect) {
+                result.innerHTML = '<p style="color: #4CAF50; font-weight: bold;">🎉 Benar! Kamu memang yang terbaik!</p>';
+                createHearts();
+            } else {
+                result.innerHTML = '<p style="color: #ff6b6b;">💕 Tidak apa-apa, yang penting kita bersama!</p>';
+            }
+            
+            // Reset quiz after 3 seconds
+            setTimeout(() => {
+                quizAnswered = false;
+                options.forEach(opt => {
+                    opt.classList.remove('correct', 'wrong');
+                    opt.style.pointerEvents = 'auto';
+                });
+                result.innerHTML = '';
+            }, 3000);
+        }
+
+        // Create floating hearts
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart';
+                    heart.textContent = '❤️';
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.animationDelay = Math.random() * 2 + 's';
+                    heartsContainer.appendChild(heart);
+                    
+                    // Remove heart after animation
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 200);
+            }
+        }
+
+        // Auto-create hearts periodically
+        setInterval(() => {
+            if (Math.random() < 0.3) {
+                createHearts();
+            }
+        }, 5000);
+
+        // Smooth scroll for better experience
+        document.addEventListener('wheel', (e) => {
+            if (Math.abs(e.deltaY) > 50) {
+                e.preventDefault();
+                const currentScroll = window.pageYOffset;
+                const windowHeight = window.innerHeight;
+                const direction = e.deltaY > 0 ? 1 : -1;
+                const nextScroll = currentScroll + (windowHeight * direction);
+                
+                window.scrollTo({
+                    top: Math.max(0, nextScroll),
+                    behavior: 'smooth'
+                });
+            }
+        }, { passive: false });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'990c94f6268fc887',t:'MTc2MDgzODE3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
