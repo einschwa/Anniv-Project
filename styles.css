@@ -121,3 +121,335 @@ button.btn{margin-top:12px;padding:10px 18px;border-radius:8px;border:0;backgrou
 
 /* utility */
 .hidden{display:none}
+
+/* Responsive Design */
+
+/* Mobile (up to 768px) */
+@media (max-width: 768px) {
+  html, body {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  /* Login Page */
+  .login-container {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .login-title {
+    font-size: 2rem;
+  }
+
+  .login-input {
+    width: 100%;
+    padding: 12px 16px;
+  }
+
+  .login-button {
+    width: 100%;
+    padding: 12px;
+  }
+
+  /* Countdown Page */
+  .countdown-title {
+    font-size: 2rem;
+  }
+
+  .countdown-timer {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .countdown-box {
+    padding: 20px;
+  }
+
+  .countdown-box .time {
+    font-size: clamp(24px, 6vw, 48px);
+  }
+
+  /* Main Site */
+  .scene {
+    padding: 40px 20px;
+  }
+
+  .scene-content {
+    max-width: 100%;
+  }
+
+  .scene h2 {
+    font-size: 1.8rem;
+  }
+
+  .scene p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* Polaroids */
+  .polaroid {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  .scene1-gallery {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .scene1-polaroid {
+    max-width: 100%;
+  }
+
+  /* Collage Gallery */
+  .collage-gallery {
+    height: 400px;
+  }
+
+  .collage-polaroid {
+    position: absolute;
+    max-width: 150px;
+  }
+
+  .collage-polaroid:nth-child(1) { top: 5%; left: 5%; }
+  .collage-polaroid:nth-child(2) { top: 5%; right: 5%; }
+  .collage-polaroid:nth-child(3) { top: 35%; left: 5%; }
+  .collage-polaroid:nth-child(4) { top: 35%; right: 5%; }
+  .collage-polaroid:nth-child(5) { bottom: 35%; left: 5%; }
+  .collage-polaroid:nth-child(6) { bottom: 35%; right: 5%; }
+  .collage-polaroid:nth-child(7) { bottom: 5%; left: 5%; }
+  .collage-polaroid:nth-child(8) { bottom: 5%; right: 5%; }
+
+  /* Envelope */
+  .envelope {
+    width: 180px;
+    height: 110px;
+  }
+
+  /* Modal */
+  .modal .card {
+    max-width: 90%;
+    max-height: 70vh;
+  }
+
+  /* Quiz */
+  .quiz-options {
+    grid-template-columns: 1fr;
+  }
+
+  /* Final Scene */
+  .final-message {
+    padding: 20px;
+  }
+
+  .handwriting {
+    font-size: 1.5rem;
+  }
+
+  /* Music Player */
+  .music-player {
+    width: 280px;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  /* Fireworks Timer */
+  #firework-timer {
+    bottom: 20px;
+    font-size: 12px;
+  }
+}
+
+/* Tablet (769px to 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  html, body {
+    font-size: 16px;
+  }
+
+  .container {
+    padding: 30px;
+  }
+
+  /* Login Page */
+  .login-container {
+    padding: 24px;
+    max-width: 400px;
+  }
+
+  .login-title {
+    font-size: 2.5rem;
+  }
+
+  /* Countdown Page */
+  .countdown-title {
+    font-size: 2.5rem;
+  }
+
+  .countdown-box {
+    padding: 30px;
+  }
+
+  .countdown-box .time {
+    font-size: clamp(48px, 6vw, 72px);
+  }
+
+  /* Main Site */
+  .scene {
+    padding: 60px 30px;
+  }
+
+  .scene-content {
+    max-width: 700px;
+  }
+
+  .scene h2 {
+    font-size: 2.2rem;
+  }
+
+  /* Polaroids */
+  .polaroid {
+    width: 200px;
+  }
+
+  .scene1-gallery {
+    gap: 25px;
+  }
+
+  /* Collage Gallery */
+  .collage-gallery {
+    height: 500px;
+  }
+
+  .collage-polaroid {
+    max-width: 180px;
+  }
+
+  /* Envelope */
+  .envelope {
+    width: 220px;
+    height: 135px;
+  }
+
+  /* Modal */
+  .modal .card {
+    max-width: 700px;
+  }
+
+  /* Quiz */
+  .quiz-options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Final Scene */
+  .final-message {
+    padding: 30px;
+  }
+
+  .handwriting {
+    font-size: 2rem;
+  }
+
+  /* Music Player */
+  .music-player {
+    width: 300px;
+  }
+}
+
+/* Desktop (1025px+) */
+@media (min-width: 1025px) {
+  html, body {
+    font-size: 18px;
+  }
+
+  .container {
+    padding: 40px;
+  }
+
+  /* Login Page */
+  .login-container {
+    padding: 28px;
+  }
+
+  .login-title {
+    font-size: 3rem;
+  }
+
+  /* Countdown Page */
+  .countdown-title {
+    font-size: 3rem;
+  }
+
+  .countdown-box {
+    padding: 40px;
+  }
+
+  .countdown-box .time {
+    font-size: clamp(72px, 8vw, 96px);
+  }
+
+  /* Main Site */
+  .scene {
+    padding: 80px 40px;
+  }
+
+  .scene-content {
+    max-width: 800px;
+  }
+
+  .scene h2 {
+    font-size: 2.5rem;
+  }
+
+  /* Polaroids */
+  .polaroid {
+    width: 220px;
+  }
+
+  .scene1-gallery {
+    gap: 30px;
+  }
+
+  /* Collage Gallery */
+  .collage-gallery {
+    height: 600px;
+  }
+
+  .collage-polaroid {
+    max-width: 200px;
+  }
+
+  /* Envelope */
+  .envelope {
+    width: 260px;
+    height: 160px;
+  }
+
+  /* Modal */
+  .modal .card {
+    max-width: 800px;
+  }
+
+  /* Quiz */
+  .quiz-options {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  /* Final Scene */
+  .final-message {
+    padding: 40px;
+  }
+
+  .handwriting {
+    font-size: 2.2rem;
+  }
+
+  /* Music Player */
+  .music-player {
+    width: 320px;
+  }
+}
