@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Teruskan — Cerita Kita</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-stars"></div>
+  <div class="cinema-intro"><div class="projector-light"></div></div>
+  <div class="film-strip"></div>
+  <div class="hearts" id="hearts"></div>
+
+  <div class="countdown-page page" id="countdownPage">
+    <h1 class="countdown-title">Menunggu Momen Spesial</h1>
+    <div class="countdown-timer" id="countdownTimer">
+      <div class="countdown-box" id="locked-page" data-target="21/10/25">
+        <h2>Hitung Mundur Menuju 21/10/25 (WIB)</h2>
+        <div id="countdown" class="time">--:--:--:--</div>
+        <p style="margin-top:8px">Ketika hitungan selesai, sebuah kejutan akan muncul.</p>
+        <a id="enter-btn" class="btn hidden" href="ref.html">Masuk ke Cerita Kita</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="fireworks-container" id="fireworksContainer">
+    <canvas id="fireworks" class="hidden"></canvas>
+    <div id="firework-timer" class="hidden" aria-hidden="true">30</div>
+  </div>
+  <div id="hearts" class="hearts"></div>
+  <div class="cinema-intro"><div class="projector-light"></div></div>
+  <div class="fade-overlay" id="fade-overlay"></div>
+  
+  <!-- Spotify Music Player -->
+  <div style="position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); width: 280px; height: 120px; z-index: 9999; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid #ff6b6b;">
+    <iframe style="border-radius: 8px; width: 100%; height: 80px; border: none;" src="https://open.spotify.com/embed/track/6lanRgr6wXibZr8KgzXxBl?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+  </div>
+  <script>
+    // guard: only accessible after login
+    if(!localStorage.getItem('anniv-unlocked')){
+      // redirect back to login if not set
+      window.location.href = 'login.html'
+    }
+    
+    // Try to enable autoplay for music player
+    document.addEventListener('DOMContentLoaded', function() {
+      const iframe = document.querySelector('iframe[src*="spotify"]');
+      if (iframe) {
+        // Try to click play after a short delay
+        setTimeout(() => {
+          try {
+            iframe.contentWindow.postMessage('{"command":"togglePlay"}', '*');
+          } catch (e) {
+            console.log('Autoplay blocked by browser');
+          }
+        }, 2000);
+      }
+    });
+  </script>
+  <script src="script.js"></script>
+  
+</body>
+</html>

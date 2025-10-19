@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerita Kita - Anniversary</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Cinema Intro -->
+    <div class="cinema-intro">
+        <div class="projector-light"></div>
+    </div>
+
+    <!-- Film Strip -->
+    <div class="film-strip"></div>
+
+    <!-- Hearts Container -->
+    <div class="hearts" id="hearts"></div>
+
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="title">
+                <h1>Cerita Kita</h1>
+                <p>Film kecil berisi kenangan kita.</p>
+            </div>
+        </section>
+
+        <!-- Scene 1: Pertemuan Pertama -->
+        <section class="scene">
+            <div class="scene-content">
+                <h2>Awal Pertemuan</h2>
+                <p>Seperti film pendek, kita bertemu di momen yang sederhana. Ingat bagaimana matamu tersenyum saat itu?</p>
+                <div class="polaroid" data-src="https://picsum.photos/seed/1/600" data-caption="Pertama kali ketemu"> 
+                  <img src="https://picsum.photos/seed/1/600" alt="polaroid">
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 2 -->
+        <section class="scene">
+            <div class="scene-content">
+                <h2>Babak Baru</h2>
+                <p>Waktu berjalan, kita mulai menulis babak bersama.</p>
+                <div class="envelope" title="Buka suratku">
+                  <div class="flap"></div>
+                  <div style="position:relative;z-index:2;color:#fff">Buka Surat</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene 3: Galeri -->
+        <section class="scene">
+            <div class="scene-content">
+                <h2>Galeri Polaroid</h2>
+                <p>Klik foto untuk melihat caption dan memori tersembunyi.</p>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+                  <div class="polaroid" data-src="https://picsum.photos/seed/3/800" data-caption="Momen 1"><img src="https://picsum.photos/seed/3/300" alt="p"></div>
+                  <div class="polaroid" data-src="https://picsum.photos/seed/4/800" data-caption="Momen 2"><img src="https://picsum.photos/seed/4/300" alt="p"></div>
+                  <div class="polaroid" data-src="https://picsum.photos/seed/5/800" data-caption="Momen 3"><img src="https://picsum.photos/seed/5/300" alt="p"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Scene -->
+        <section class="final-scene">
+            <div class="final-message">Selamat Anniversary, aku mencintaimu.</div>
+        </section>
+    </main>
+
+    <!-- photo modal -->
+    <div id="photo-modal" class="modal">
+      <div class="card">
+        <button class="close">Tutup</button>
+        <div class="photo"><img src="" style="max-width:100%;height:auto;border-radius:8px"></div>
+        <div class="caption" style="margin-top:12px;color:#ffd1dc"></div>
+      </div>
+    </div>
+
+    <!-- letter modal -->
+    <div id="letter-modal" class="modal">
+      <div class="card">
+        <button class="close">Tutup</button>
+        <h3>Untukmu</h3>
+        <p>Ini sebuah surat kecil. Terima kasih sudah menjadi bagian dari hidupku. Semoga kita selalu menulis cerita indah bersama.</p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      // Small init to mirror ref.html behaviour for observers and hearts
+      (function(){
+        const observerOptions = {root:null,rootMargin:'0px',threshold:0.25}
+        const observer = new IntersectionObserver((entries)=>{entries.forEach(entry=>{ if(entry.isIntersecting) entry.target.classList.add('visible') }) }, observerOptions)
+        document.querySelectorAll('.scene-content').forEach(el=>observer.observe(el))
+
+        function createHearts(count=5){ const container=document.getElementById('hearts'); if(!container) return; for(let i=0;i<count;i++){ const s=document.createElement('div'); s.className='heart'; s.textContent='❤'; s.style.left=(10+Math.random()*80)+'%'; s.style.top=(60+Math.random()*30)+'vh'; s.style.fontSize=(12+Math.random()*24)+'px'; container.appendChild(s); setTimeout(()=>{ s.style.transition='transform 4s linear, opacity 4s linear'; s.style.transform='translateY(-140vh) rotate('+ (Math.random()*360)+'deg)'; s.style.opacity=0 }, 50) ; setTimeout(()=>s.remove(),4600) }}
+        createHearts(6); setInterval(()=>{ if(Math.random()<0.6) createHearts(3) },4500)
+      })()
+    </script>
+</body>
+</html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cerita Kita — Anniversary</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="bg-stars"></div>
+  <div class="vignette"></div>
+  <div class="film-grain"></div>
+
+  <div class="fireworks-container" id="fireworksContainer">
+    <canvas id="fireworks" class="hidden"></canvas>
+    <div id="firework-timer" class="hidden" aria-hidden="true">30</div>
+  </div>
+
+  <!-- Projector intro overlay -->
+  <div class="projector hidden" aria-hidden="true">
+    <audio id="proj-audio" src="" preload="auto"></audio>
+    <div class="beam"></div>
+    <div class="title">Cerita Kita</div>
+  </div>
+
+  <div class="cinema-intro"><div class="projector-light"></div></div>
+
+  <div class="film-strip"></div>
+
+  <div id="hearts" class="hearts"></div>
+
+  <main class="main-content page" id="mainContent">
+  <section class="scene reveal" id="scene-1">
+      <div class="film-strip"></div>
+      <div class="scene-content">
+        <h2>Awal Pertemuan</h2>
+        <p>Seperti film pendek, kita bertemu di momen yang sederhana. Ingat bagaimana matamu tersenyum saat itu?</p>
+        <div class="polaroid" data-src="https://picsum.photos/seed/1/600" data-caption="Pertama kali ketemu"> 
+          <img src="https://picsum.photos/seed/1/600" alt="polaroid">
+        </div>
+      </div>
+      <div class="scene-illustration">
+        <!-- small decorative -->
+      </div>
+    </section>
+
+  <section class="scene reveal" id="scene-2">
+      <div class="film-strip"></div>
+      <div class="scene-content">
+        <h2>Babak Baru</h2>
+        <p>Waktu berjalan, kita mulai menulis babak bersama. Setiap tawa dan canda seperti cut di gulungan film.</p>
+        <div class="envelope" title="Buka suratku">
+          <div class="flap"></div>
+          <div style="position:relative;z-index:2;color:#fff">Buka Surat</div>
+        </div>
+      </div>
+      <div class="scene-illustration">
+        <div class="polaroid" data-src="https://picsum.photos/seed/2/600" data-caption="Kenangan manis"><img src="https://picsum.photos/seed/2/600" alt="polaroid"></div>
+      </div>
+    </section>
+
+  <section class="scene reveal" id="scene-3">
+      <div class="film-strip"></div>
+      <div class="scene-content">
+        <h2>Galeri Polaroid</h2>
+        <p>Klik foto untuk melihat caption dan memori tersembunyi.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <div class="polaroid" data-src="https://picsum.photos/seed/3/800" data-caption="Momen 1"><img src="https://picsum.photos/seed/3/300" alt="p"></div>
+          <div class="polaroid" data-src="https://picsum.photos/seed/4/800" data-caption="Momen 2"><img src="https://picsum.photos/seed/4/300" alt="p"></div>
+          <div class="polaroid" data-src="https://picsum.photos/seed/5/800" data-caption="Momen 3"><img src="https://picsum.photos/seed/5/300" alt="p"></div>
+        </div>
+      </div>
+    </section>
+
+  <section class="scene reveal" id="scene-4">
+      <div class="film-strip"></div>
+      <div class="scene-content">
+        <h2>Mini Game: Puzzle</h2>
+        <p>Susun potongan untuk melihat foto lengkap kita.</p>
+        <div id="puzzle" style="display:flex;gap:8px;">
+          <div class="piece" data-idx="0" data-correct="2" style="width:100px;height:100px;background:#222;display:flex;align-items:center;justify-content:center;">A</div>
+          <div class="piece" data-idx="1" data-correct="0" style="width:100px;height:100px;background:#333;display:flex;align-items:center;justify-content:center;">B</div>
+          <div class="piece" data-idx="2" data-correct="1" style="width:100px;height:100px;background:#444;display:flex;align-items:center;justify-content:center;">C</div>
+        </div>
+      </div>
+    </section>
+
+  <section class="scene reveal" id="scene-5">
+      <div class="film-strip"></div>
+      <div class="scene-content">
+        <h2>Seberapa ingat kamu tentang kita?</h2>
+        <form id="quiz" data-total="2">
+          <div>
+            <p>Di mana pertama kali kita bertemu?</p>
+            <label><input type="radio" name="q1" value="kafe" data-correct="false"> Kafe</label>
+            <label><input type="radio" name="q1" value="kampus" data-correct="true"> Kampus</label>
+          </div>
+          <div>
+            <p>Siapa yang selalu lupa ulang tahun kita?</p>
+            <label><input type="radio" name="q2" value="aku" data-correct="false"> Aku</label>
+            <label><input type="radio" name="q2" value="kamu" data-correct="true"> Kamu</label>
+          </div>
+          <button class="btn" type="submit">Kirim</button>
+          <div class="result" style="margin-top:12px"></div>
+        </form>
+      </div>
+    </section>
+
+    <section class="scene reveal" id="scene-final">
+      <div class="film-strip"></div>
+      <div class="scene-content">
+        <h2>Frame Terakhir</h2>
+        <!-- handwriting SVG -->
+        <svg class="handwriting" width="100%" height="120" viewBox="0 0 800 140" aria-hidden="true">
+          <path d="M40 80 C120 10, 220 10, 300 80 S460 150, 560 80 S700 10,760 80" />
+        </svg>
+        <p style="margin-top:12px;opacity:0.9;color:#ffd1dc">Ucapan dan harapan di akhir film.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- photo modal -->
+  <div id="photo-modal" class="modal">
+    <div class="card">
+      <button class="close">Tutup</button>
+      <div class="photo"><img src="" style="max-width:100%;height:auto;border-radius:8px"></div>
+      <div class="caption" style="margin-top:12px;color:#ffd1dc"></div>
+    </div>
+  </div>
+
+  <!-- letter modal -->
+  <div id="letter-modal" class="modal">
+    <div class="card">
+      <button class="close">Tutup</button>
+      <h3>Untukmu</h3>
+      <p>Ini sebuah surat kecil. Terima kasih sudah menjadi bagian dari hidupku. Semoga kita selalu menulis cerita indah bersama.</p>
+    </div>
+  </div>
+
+  <canvas id="fireworks" class="hidden"></canvas>
+  <!-- placeholder audio: replace src with your instrumental file -->
+  <audio id="proj-audio" preload="auto" loop>
+    <!-- <source src="your-song.mp3" type="audio/mpeg"> -->
+  </audio>
+
+  <script src="script.js"></script>
+  <script>
+    // Adapted from ref.html: start main experience, hearts, and handwriting reveal
+    function startMainExperience(){
+      const observerOptions = { root: null, rootMargin: '0px', threshold: 0.25 };
+      const observer = new IntersectionObserver((entries)=>{
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            entry.target.classList.add('visible')
+          }
+        })
+      }, observerOptions)
+      document.querySelectorAll('.scene-content').forEach(el=>observer.observe(el))
+    }
+
+    function createHearts(count=6){
+      const container = document.getElementById('hearts')
+      if(!container) return
+      for(let i=0;i<count;i++){
+        const span = document.createElement('div')
+        span.className='heart'
+        span.textContent='❤'
+        span.style.left = Math.random()*100 + '%'
+        span.style.top = 100 + Math.random()*20 + 'vh'
+        span.style.fontSize = (12 + Math.random()*18) + 'px'
+        span.style.opacity = 0
+        container.appendChild(span)
+        // animate using CSS keyframes defined in styles.css
+        const delay = Math.random()*800
+        setTimeout(()=>{
+          span.style.transition = 'transform 3s linear, opacity 3s linear'
+          span.style.transform = `translateY(-120vh) rotate(${Math.random()*360}deg)`
+          span.style.opacity = 1
+        }, delay)
+        setTimeout(()=>span.remove(), 5200 + delay)
+      }
+    }
+
+    // handwriting reveal using IntersectionObserver on .handwriting
+    function setupHandwritingReveal(){
+      const hw = document.querySelector('.handwriting')
+      if(!hw) return
+      const ob = new IntersectionObserver((entries)=>{
+        if(entries[0].isIntersecting){ hw.classList.add('visible'); ob.disconnect() }
+      }, {threshold:0.3})
+      ob.observe(hw)
+    }
+
+    document.addEventListener('DOMContentLoaded',()=>{
+      startMainExperience()
+      setupHandwritingReveal()
+      // initial hearts and periodic generation
+      createHearts(4)
+      setInterval(()=>{ if(Math.random()<0.6) createHearts(3) }, 4500)
+    })
+  </script>
+</body>
+</html>
