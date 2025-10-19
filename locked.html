@@ -32,32 +32,13 @@
   <div id="hearts" class="hearts"></div>
   <div class="cinema-intro"><div class="projector-light"></div></div>
   <div class="fade-overlay" id="fade-overlay"></div>
-  
-  <!-- Spotify Music Player -->
-  <div style="position: fixed; bottom: 50px; left: 50%; transform: translateX(-50%); width: 280px; height: 120px; z-index: 9999; background: rgba(0,0,0,0.8); padding: 10px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); border: 1px solid #ff6b6b;">
-    <iframe style="border-radius: 8px; width: 100%; height: 80px; border: none;" src="https://open.spotify.com/embed/track/6lanRgr6wXibZr8KgzXxBl?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-  </div>
+
   <script>
     // guard: only accessible after login
     if(!localStorage.getItem('anniv-unlocked')){
       // redirect back to login if not set
       window.location.href = 'index.html'
     }
-    
-    // Try to enable autoplay for music player
-    document.addEventListener('DOMContentLoaded', function() {
-      const iframe = document.querySelector('iframe[src*="spotify"]');
-      if (iframe) {
-        // Try to click play after a short delay
-        setTimeout(() => {
-          try {
-            iframe.contentWindow.postMessage('{"command":"togglePlay"}', '*');
-          } catch (e) {
-            console.log('Autoplay blocked by browser');
-          }
-        }, 2000);
-      }
-    });
   </script>
   <script src="script.js"></script>
   
