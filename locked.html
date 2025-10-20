@@ -7,6 +7,44 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
   <link rel="stylesheet" href="styles.css">
   <style>
+    /* Fireworks Styles */
+    .fireworks-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    #fireworks {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #fireworks.hidden {
+      display: none;
+    }
+
+    #firework-timer {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0); /* Lebih transparan */
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      z-index: 1001;
+    }
+
+    #firework-timer.hidden {
+      display: none;
+    }
+
     /* Music Controls */
     .music-controls {
       position: fixed;

@@ -145,14 +145,19 @@ document.addEventListener('DOMContentLoaded',()=>{
     const now = new Date()
     const diff = targetDate - now
     if(diff<=0){
-      // unlocked -> show fireworks
+      // unlocked -> show fireworks with a slight delay for smooth transition
       if(cdEl) cdEl.textContent='00:00:00:00'
       localStorage.setItem('anniv-unlocked-time','true')
-      // Unhide fireworks canvas and timer, start fireworks sequence
-      const c = document.getElementById('fireworks'); if(c) c.classList.remove('hidden')
-      const ft = document.getElementById('firework-timer'); if(ft) ft.classList.remove('hidden')
-      // start fireworks for 30 seconds and show small countdown
-      runFireworksWithTimer(30)
+      
+      // Add a small delay before starting fireworks
+      setTimeout(() => {
+        // Unhide fireworks canvas and timer, start fireworks sequence
+        const c = document.getElementById('fireworks'); if(c) c.classList.remove('hidden')
+        const ft = document.getElementById('firework-timer'); if(ft) ft.classList.remove('hidden')
+        // start fireworks for 30 seconds and show small countdown
+        runFireworksWithTimer(30)
+      }, 500) // 500ms delay
+      
       // reveal link to site at end of fireworks (handled in runFireworksWithTimer)
       clearInterval(cdTimer)
       return
@@ -167,17 +172,41 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(document.getElementById('locked-page')){
     updateCountdown(); cdTimer=setInterval(updateCountdown,1000)
   }
-
   // Run fireworks for a given duration (seconds) with small timer and then transition to ref.html
-  let fireworksRunning=false
+  // Declare control flag early so other code can't access it before initialization
+  let fireworksRunning = false
   function runFireworksWithTimer(seconds){
-    if(fireworksRunning) return
+    console.log('Running fireworks timer...')
+    if(fireworksRunning) {
+      console.log('Fireworks timer already running')
+      return
+    }
     fireworksRunning=true
+    
     const canvas = document.getElementById('fireworks')
     const timerEl = document.getElementById('firework-timer')
-    if(canvas) canvas.classList.remove('hidden')
-    if(timerEl){ timerEl.classList.remove('hidden'); timerEl.textContent = String(seconds) }
+    
+    if(!canvas) {
+      console.error('Fireworks canvas element not found!')
+      return
+    }
+    
+    if(!timerEl) {
+      console.error('Timer element not found!')
+    }
+    
+    // Force display properties
+    canvas.classList.remove('hidden')
+    canvas.style.display = 'block'
+    
+    if(timerEl){
+      timerEl.classList.remove('hidden')
+      timerEl.style.display = 'block'
+      timerEl.textContent = String(seconds)
+    }
+    
     // start fireworks engine
+    console.log('Starting fireworks engine...')
     startFireworks()
     let remaining = seconds
     const tId = setInterval(()=>{
@@ -258,13 +287,39 @@ document.addEventListener('DOMContentLoaded',()=>{
   // Improved fireworks engine: rockets -> bursts with trails + glow
   let fireworksActive = false
   function startFireworks(){
-    if(fireworksActive) return
-    fireworksActive = true
+    console.log('Starting fireworks...')
+    if(fireworksActive) {
+      console.log('Fireworks already active')
+      return
+    }
+    
     const c = document.getElementById('fireworks')
-    if(!c) return
+    if(!c) {
+      console.error('Fireworks canvas not found!')
+      return
+    }
+    
+    // Force canvas to be visible
+    c.classList.remove('hidden')
+    c.style.display = 'block'
+    
+    fireworksActive = true
     const ctx = c.getContext('2d')
-    let W = c.width = innerWidth; let H = c.height = innerHeight
-    function onResize(){ W = c.width = innerWidth; H = c.height = innerHeight }
+    if(!ctx) {
+      console.error('Could not get canvas context!')
+      return
+    }
+    
+    // Force canvas size update
+    let W = c.width = window.innerWidth
+    let H = c.height = window.innerHeight
+    console.log(`Canvas size set to: ${W}x${H}`)
+    
+    function onResize(){ 
+      W = c.width = window.innerWidth
+      H = c.height = window.innerHeight
+      console.log(`Canvas resized to: ${W}x${H}`)
+    }
     window.addEventListener('resize', onResize)
 
     const rockets = []
@@ -272,65 +327,159 @@ document.addEventListener('DOMContentLoaded',()=>{
     function rand(a,b){return a+Math.random()*(b-a)}
 
     function spawnRocket(){
-      const x = rand(W*0.1, W*0.9)
-      rockets.push({x, y:H+10, vx:rand(-1,1), vy:rand(-11,-8), life:0, hue:rand(0,360)})
+      const x = rand(W*0.2, W*0.8) // More centered spawning
+      const hue = rand(0,360)
+      const brightness = rand(50,80) // Variable brightness
+      rockets.push({
+        x, 
+        y:H+10, 
+        vx:rand(-1,1), 
+        vy:rand(-15,-12), // Faster rockets
+        life:0, 
+        hue,
+        brightness,
+        size: rand(2,4) // Variable size
+      })
     }
 
     function explode(x,y,hue){
-      const count = (rand(60,140)|0)
+      const count = (rand(100,200)|0) // More particles
+      const particleHues = []
+      // Create complementary colors
+      for(let i=0; i<count; i++){
+        particleHues.push(
+          Math.random() < 0.5 ? 
+          hue + rand(-15,15) : // Similar hue
+          (hue + 180 + rand(-15,15)) % 360 // Complementary hue
+        )
+      }
+      
+      // Multiple explosion patterns
+      const pattern = Math.random()
       for(let i=0;i<count;i++){
-        const angle = Math.random()*Math.PI*2
-        const speed = rand(1,6)
-        particles.push({x,y, vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed, life:rand(40,120)|0, age:0, hue, alpha:1})
+        let angle, speed
+        if(pattern < 0.3){ // Circle
+          angle = (i/count)*Math.PI*2
+          speed = rand(3,7)
+        } else if(pattern < 0.6){ // Double spiral
+          angle = (i/count)*Math.PI*4 + Math.sin(i*0.1)
+          speed = rand(2,6)
+        } else { // Random scatter
+          angle = Math.random()*Math.PI*2
+          speed = rand(2,8)
+        }
+        
+        particles.push({
+          x, y,
+          vx: Math.cos(angle)*speed,
+          vy: Math.sin(angle)*speed,
+          life: rand(60,140)|0, // Longer life
+          age: 0,
+          hue: particleHues[i],
+          alpha: 1,
+          size: rand(1.5,3.5), // Larger particles
+          decay: rand(0.015,0.03) // Variable fade rate
+        })
       }
       // play explosion sound
       try{ playExplosion(ensureAudioCtx().currentTime+0.02, x/W) } catch(e){}
     }
 
     function loop(){
-      if(!fireworksActive){ ctx.clearRect(0,0,W,H); window.removeEventListener('resize', onResize); return }
+      if(!fireworksActive){ 
+        console.log('Fireworks stopped')
+        ctx.clearRect(0,0,W,H)
+        window.removeEventListener('resize', onResize)
+        return 
+      }
+
+      // Clear and draw debug frame if no particles
       ctx.clearRect(0,0,W,H)
+      if(rockets.length === 0 && particles.length === 0) {
+        // Draw debug frame to ensure canvas is working
+        ctx.strokeStyle = 'rgba(255,0,0,0.5)'
+        ctx.strokeRect(0, 0, W, H)
+      }
       // draw subtle background fade for motion trails
       ctx.fillStyle='rgba(0,0,0,0.18)'
       ctx.fillRect(0,0,W,H)
 
+      // Draw background with fade effect
+      ctx.fillStyle = 'rgba(0,0,0,0.15)' // Softer fade
+      ctx.fillRect(0,0,W,H)
+
       // rockets
-      if(Math.random()<0.08) spawnRocket()
+      if(Math.random()<0.1) spawnRocket() // Slightly more frequent
       for(let i=rockets.length-1;i>=0;i--){
         const r = rockets[i]
         r.vy += 0.12
         r.x += r.vx
         r.y += r.vy
         r.life++
-        // draw rocket as bright head
+        
+        // Draw rocket glow
+        const gradient = ctx.createRadialGradient(r.x, r.y, 0, r.x, r.y, r.size * 4)
+        gradient.addColorStop(0, `hsla(${r.hue},100%,${r.brightness}%,0.3)`)
+        gradient.addColorStop(1, 'transparent')
+        ctx.fillStyle = gradient
         ctx.beginPath()
-        ctx.fillStyle = `hsl(${r.hue}, 90%, 60%)`
-        ctx.arc(r.x, r.y, 3, 0, Math.PI*2); ctx.fill()
-        // trail
-        ctx.strokeStyle = `rgba(255,255,255,0.06)`
-        ctx.lineWidth=2
-        ctx.beginPath(); ctx.moveTo(r.x - r.vx*3, r.y - r.vy*3); ctx.lineTo(r.x, r.y); ctx.stroke()
-        if(r.vy> -1){ // explode when slowing
+        ctx.arc(r.x, r.y, r.size * 4, 0, Math.PI*2)
+        ctx.fill()
+        
+        // Draw rocket core
+        ctx.beginPath()
+        ctx.fillStyle = `hsl(${r.hue},100%,${r.brightness}%)`
+        ctx.arc(r.x, r.y, r.size, 0, Math.PI*2)
+        ctx.fill()
+        
+        // Enhanced trail
+        ctx.strokeStyle = `hsla(${r.hue},100%,${r.brightness}%,0.1)`
+        ctx.lineWidth = r.size
+        ctx.beginPath()
+        ctx.moveTo(r.x - r.vx*5, r.y - r.vy*5)
+        ctx.lineTo(r.x, r.y)
+        ctx.stroke()
+        
+        if(r.vy > -2){ // explode when slowing
           explode(r.x, r.y, r.hue)
           rockets.splice(i,1)
         }
       }
 
       // particles
+      ctx.globalCompositeOperation = 'lighter'
       for(let i=particles.length-1;i>=0;i--){
         const p = particles[i]
         p.age++
         p.vy += 0.02 // gravity
-        p.x += p.vx; p.y += p.vy
-        p.vx *= 0.995; p.vy *= 0.998
-        const lifeRatio = 1 - p.age / p.life
-        const size = Math.max(0.5, lifeRatio*3)
-        ctx.globalCompositeOperation = 'lighter'
-        ctx.fillStyle = `hsla(${p.hue},90%,60%,${lifeRatio})`
-        ctx.beginPath(); ctx.arc(p.x,p.y,size,0,Math.PI*2); ctx.fill()
-        // tiny sparks
-        if(Math.random()<0.02 && lifeRatio>0.4){ ctx.fillStyle='rgba(255,255,255,0.6)'; ctx.fillRect(p.x+Math.random()*2,p.y+Math.random()*2,1,1) }
-        if(p.age>p.life) particles.splice(i,1)
+        p.x += p.vx
+        p.y += p.vy
+        p.vx *= 0.995
+        p.vy *= 0.998
+        p.alpha = Math.max(0, p.alpha - (p.decay || 0.02))
+        
+        // Particle glow
+        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 3)
+        gradient.addColorStop(0, `hsla(${p.hue},100%,70%,${p.alpha})`)
+        gradient.addColorStop(1, 'transparent')
+        ctx.fillStyle = gradient
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.size * 3, 0, Math.PI*2)
+        ctx.fill()
+        
+        // Particle core
+        ctx.fillStyle = `hsla(${p.hue},100%,60%,${p.alpha})`
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI*2)
+        ctx.fill()
+        
+        // Sparkle effect
+        if(Math.random() < 0.05 && p.alpha > 0.2){
+          ctx.fillStyle = `rgba(255,255,255,${p.alpha * 0.3})`
+          ctx.fillRect(p.x + rand(-2,2), p.y + rand(-2,2), 1, 1)
+        }
+        
+        if(p.age > p.life || p.alpha <= 0) particles.splice(i,1)
       }
 
       ctx.globalCompositeOperation = 'source-over'
@@ -344,10 +493,12 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   // Expose test helper in console: runFireworksTest(seconds)
   window.runFireworksTest = function(seconds=6){
-    const ft = document.getElementById('firework-timer')
-    if(ft){ ft.classList.remove('hidden'); ft.textContent = String(seconds) }
-    const c = document.getElementById('fireworks'); if(c) c.classList.remove('hidden')
-    runFireworksWithTimer(seconds)
+    setTimeout(() => {
+      const ft = document.getElementById('firework-timer')
+      if(ft){ ft.classList.remove('hidden'); ft.textContent = String(seconds) }
+      const c = document.getElementById('fireworks'); if(c) c.classList.remove('hidden')
+      runFireworksWithTimer(seconds)
+    }, 500) // Same 500ms delay as the main implementation
   }
 
 })
