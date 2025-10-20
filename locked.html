@@ -6,12 +6,52 @@
   <title>Teruskan — Cerita Kita</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Music Controls */
+    .music-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .music-controls:hover {
+      transform: scale(1.1);
+      background: rgba(0, 0, 0, 0.9);
+    }
+
+    .music-icon {
+      width: 24px;
+      height: 24px;
+      color: white;
+      text-align: center;
+      line-height: 24px;
+      font-size: 20px;
+    }
+  </style>
 </head>
 <body>
   <div class="bg-stars"></div>
   <div class="cinema-intro"><div class="projector-light"></div></div>
   <div class="film-strip"></div>
   <div class="hearts" id="hearts"></div>
+
+  <!-- Background Music -->
+  <audio id="bgMusic" preload="auto" loop>
+    <source src="assets/A Thousand Years.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Music Controls -->
+  <div class="music-controls" onclick="toggleMusic()">
+    <div class="music-icon">🔇</div>
+  </div>
 
   <div class="countdown-page page" id="countdownPage">
     <h1 class="countdown-title">Menunggu Momen Spesial</h1>
@@ -40,6 +80,46 @@
       window.location.href = 'index.html'
     }
   </script>
+
+  <!-- Music Control Script -->
+  <script>
+    // Music Controls
+    const bgMusic = document.getElementById('bgMusic');
+    const musicIcon = document.querySelector('.music-icon');
+    let isFirstClick = true;
+    
+    function toggleMusic() {
+      if (isFirstClick) {
+        // First time setup
+        bgMusic.volume = 0.5; // Set initial volume to 50%
+        isFirstClick = false;
+      }
+      
+      if (bgMusic.paused) {
+        const playPromise = bgMusic.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              musicIcon.textContent = '🎵';
+            })
+            .catch(error => {
+              console.log("Playback failed:", error);
+              musicIcon.textContent = '🔇';
+            });
+        }
+      } else {
+        bgMusic.pause();
+        musicIcon.textContent = '🔇';
+      }
+    }
+
+    // Set initial state
+    document.addEventListener('DOMContentLoaded', function() {
+      musicIcon.textContent = '🔇'; // Start with muted icon
+      bgMusic.pause(); // Ensure music starts paused
+    });
+  </script>
+
   <script src="script.js"></script>
   
 </body>
